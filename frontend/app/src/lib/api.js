@@ -14,11 +14,19 @@ import { supabase } from './supabaseClient'
 
 const URGENCY_RANK = { high: 0, medium: 1, low: 2 }
 
+// Local calendar date (YYYY-MM-DD), not UTC — new Date().toISOString()
+// shifts to tomorrow's date in the evening for anyone west of UTC.
+export function todayLocal() {
+  const d = new Date()
+  const offset = d.getTimezoneOffset() * 60000
+  return new Date(d.getTime() - offset).toISOString().slice(0, 10)
+}
+
 // Surfaces exactly one task — the core "only one task at a time" rule.
 // Sorted client-side because Postgres would order urgency alphabetically
 // (high, low, medium) rather than by actual priority.
 export async function getTodayTask(userId) {
-  const today = new Date().toISOString().slice(0, 10)
+  const today = todayLocal()
   const { data, error } = await supabase
     .from('tasks')
     .select('*')
@@ -116,7 +124,7 @@ export async function getSubtasks(parentTaskId) {
 // ---------- mood ----------
 
 export async function logMood(userId, mood, medicated) {
-  const today = new Date().toISOString().slice(0, 10)
+  const today = todayLocal()
   const { data, error } = await supabase
     .from('mood_logs')
     .upsert(

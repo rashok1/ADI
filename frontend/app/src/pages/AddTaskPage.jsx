@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { createTask } from '../lib/api'
+import { createTask, todayLocal } from '../lib/api'
 
 export default function AddTaskPage() {
   const { user } = useAuth()
@@ -12,20 +12,27 @@ export default function AddTaskPage() {
   const [urgency, setUrgency] = useState('medium')
   const [bigTaskMode, setBigTaskMode] = useState(null)
   const [saving, setSaving] = useState(false)
+  const [error, setError] = useState(null)
 
   async function handleSubmit(e) {
     e.preventDefault()
     setSaving(true)
-    await createTask(user.id, {
-      title,
-      due_date: dueDate || null,
-      scheduled_for: dueDate || new Date().toISOString().slice(0, 10),
-      hours_needed: hours ? Number(hours) : null,
-      urgency,
-      big_task_mode: bigTaskMode
-    })
-    setSaving(false)
-    navigate('/')
+    setError(null)
+    try {
+      await createTask(user.id, {
+        title,
+        due_date: dueDate || null,
+        scheduled_for: dueDate || todayLocal(),
+        hours_needed: hours ? Number(hours) : null,
+        urgency,
+        big_task_mode: bigTaskMode
+      })
+      navigate('/')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -100,6 +107,10 @@ export default function AddTaskPage() {
           Spread over week
         </button>
       </div>
+
+      {error && (
+        <div className="rounded-2xl bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">{error}</div>
+      )}
 
       <button
         type="submit"

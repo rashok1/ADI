@@ -8,13 +8,21 @@ export default function MoodCheckInPage() {
   const navigate = useNavigate()
   const [mood, setMood] = useState(null)
   const [medicated, setMedicated] = useState(null)
+  const [medicatedChoice, setMedicatedChoice] = useState(null)
   const [saving, setSaving] = useState(false)
+  const [error, setError] = useState(null)
 
   async function handleContinue() {
     setSaving(true)
-    await logMood(user.id, mood, medicated)
-    setSaving(false)
-    navigate('/')
+    setError(null)
+    try {
+      await logMood(user.id, mood, medicated)
+      navigate('/')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
   }
 
   const moodBtn = (value, label, activeClass) => (
@@ -47,8 +55,15 @@ export default function MoodCheckInPage() {
           ].map(([value, label]) => (
             <button
               key={value}
-              onClick={() => setMedicated(value === 'yes' ? true : value === 'no' ? false : null)}
-              className="flex-1 rounded-wobble border-2 border-border bg-[#F3EBFB] py-2 text-xs font-semibold text-lilacText"
+              onClick={() => {
+                setMedicatedChoice(value)
+                setMedicated(value === 'yes' ? true : value === 'no' ? false : null)
+              }}
+              className={`flex-1 rounded-wobble border-2 py-2 text-xs font-semibold ${
+                medicatedChoice === value
+                  ? 'border-lilacText bg-lilac text-lilacText'
+                  : 'border-border bg-[#F3EBFB] text-lilacText'
+              }`}
             >
               {label}
             </button>
@@ -56,6 +71,10 @@ export default function MoodCheckInPage() {
         </div>
 
         <p className="mt-2 text-xs text-textMuted">No judgment either way 💛</p>
+
+        {error && (
+          <div className="mt-2 rounded-2xl bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">{error}</div>
+        )}
 
         <button
           onClick={handleContinue}

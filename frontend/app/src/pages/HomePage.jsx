@@ -18,6 +18,7 @@ export default function HomePage() {
   const { user } = useAuth()
   const [task, setTask] = useState(null)
   const [loadingTask, setLoadingTask] = useState(true)
+  const [loadError, setLoadError] = useState(null)
   const [weeds, setWeeds] = useState(0)
   const [owned, setOwned] = useState([])
   const [shopOpen, setShopOpen] = useState(false)
@@ -33,16 +34,22 @@ export default function HomePage() {
     let cancelled = false
     async function load() {
       setLoadingTask(true)
-      const [todayTask, currency, inventory] = await Promise.all([
-        getTodayTask(user.id),
-        getCurrency(user.id),
-        getInventory(user.id)
-      ])
-      if (cancelled) return
-      setTask(todayTask)
-      setWeeds(currency)
-      setOwned(inventory)
-      setLoadingTask(false)
+      setLoadError(null)
+      try {
+        const [todayTask, currency, inventory] = await Promise.all([
+          getTodayTask(user.id),
+          getCurrency(user.id),
+          getInventory(user.id)
+        ])
+        if (cancelled) return
+        setTask(todayTask)
+        setWeeds(currency)
+        setOwned(inventory)
+      } catch (err) {
+        if (!cancelled) setLoadError(err.message)
+      } finally {
+        if (!cancelled) setLoadingTask(false)
+      }
     }
     load()
     return () => {
@@ -93,6 +100,8 @@ export default function HomePage() {
       <div className="mt-3 rounded-wobble bg-cream p-4 text-center">
         {loadingTask ? (
           <div className="text-sm text-textMuted">Finding today's task…</div>
+        ) : loadError ? (
+          <div className="text-sm font-semibold text-red-600">Couldn't load: {loadError}</div>
         ) : !task ? (
           <div>
             <div className="text-base font-bold">Nothing scheduled today 💛</div>
