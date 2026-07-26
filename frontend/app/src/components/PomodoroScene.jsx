@@ -108,10 +108,6 @@ export default function PomodoroScene({ variant, duckDip = false, weedSpriteLeft
         <div className="absolute inset-0 flex items-center justify-center">
           <DuckSVG width={100} height={124} />
         </div>
-        <div className="absolute left-0 right-0 bottom-0 p-2 text-center text-xs font-bold text-[#3E6B52]"
-             style={{ background: 'linear-gradient(0deg, rgba(255,251,243,0.9) 30%, rgba(255,251,243,0))' }}>
-          great focus session! 🎉
-        </div>
       </div>
     )
   }

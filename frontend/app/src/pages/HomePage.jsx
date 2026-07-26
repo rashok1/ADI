@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { getTodayTask, getCurrency, getInventory, buyItem } from '../lib/api'
-import { usePomodoro } from '../hooks/usePomodoro'
-import { useAmbientSound } from '../hooks/useAmbientSound'
+import { getTodayTask, getCurrency, getInventory, buyItem, completeTask } from '../lib/api'
 import PomodoroScene from '../components/PomodoroScene'
 import ShopModal from '../components/ShopModal'
 
-const SOUND_OPTIONS = [
-  { key: 'white', label: '🌫️ White noise' },
-  { key: 'water', label: '💧 Water' },
-  { key: 'fire', label: '🔥 Fire' },
-  { key: 'off', label: '🔇 Off' }
+const HAPPY_MESSAGES = [
+  "Nothing on deck for today — enjoy the breathing room 💛",
+  "All clear for today! You're caught up 🌿",
+  "Nothing scheduled today. A quiet day is still a good day 🌤"
 ]
 
 export default function HomePage() {
@@ -22,39 +19,31 @@ export default function HomePage() {
   const [weeds, setWeeds] = useState(0)
   const [owned, setOwned] = useState([])
   const [shopOpen, setShopOpen] = useState(false)
+  const [completing, setCompleting] = useState(false)
+  const [happyMessage] = useState(() => HAPPY_MESSAGES[Math.floor(Math.random() * HAPPY_MESSAGES.length)])
 
-  const { scene, remaining, duckDip, weedSprite, start, pause, resume, stop } = usePomodoro({
-    userId: user.id,
-    taskId: task?.id ?? null,
-    onWeedsChange: setWeeds
-  })
-  const { active: activeSound, toggle: toggleSound } = useAmbientSound()
+  async function load() {
+    setLoadingTask(true)
+    setLoadError(null)
+    try {
+      const [todayTask, currency, inventory] = await Promise.all([
+        getTodayTask(user.id),
+        getCurrency(user.id),
+        getInventory(user.id)
+      ])
+      setTask(todayTask)
+      setWeeds(currency)
+      setOwned(inventory)
+    } catch (err) {
+      setLoadError(err.message)
+    } finally {
+      setLoadingTask(false)
+    }
+  }
 
   useEffect(() => {
-    let cancelled = false
-    async function load() {
-      setLoadingTask(true)
-      setLoadError(null)
-      try {
-        const [todayTask, currency, inventory] = await Promise.all([
-          getTodayTask(user.id),
-          getCurrency(user.id),
-          getInventory(user.id)
-        ])
-        if (cancelled) return
-        setTask(todayTask)
-        setWeeds(currency)
-        setOwned(inventory)
-      } catch (err) {
-        if (!cancelled) setLoadError(err.message)
-      } finally {
-        if (!cancelled) setLoadingTask(false)
-      }
-    }
     load()
-    return () => {
-      cancelled = true
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.id])
 
   async function handleBuy(itemKey, cost) {
@@ -67,8 +56,18 @@ export default function HomePage() {
     }
   }
 
-  const isPaused = scene === 'resting'
-  const isActive = scene === 'active' || scene === 'resting'
+  async function handleMarkDone() {
+    if (!task) return
+    setCompleting(true)
+    try {
+      await completeTask(task.id)
+      await load()
+    } catch (err) {
+      alert(err.message)
+    } finally {
+      setCompleting(false)
+    }
+  }
 
   return (
     <div
@@ -88,12 +87,7 @@ export default function HomePage() {
       </div>
 
       <div className="relative">
-        <PomodoroScene
-          variant={isActive ? (isPaused ? 'resting' : 'active') : scene}
-          duckDip={duckDip}
-          weedSpriteLeft={weedSprite.left}
-          weedSpriteOpacity={weedSprite.opacity}
-        />
+        <PomodoroScene variant="welcome" />
         <ShopModal open={shopOpen} onClose={() => setShopOpen(false)} weeds={weeds} owned={owned} onBuy={handleBuy} />
       </div>
 
@@ -104,10 +98,15 @@ export default function HomePage() {
           <div className="text-sm font-semibold text-red-600">Couldn't load: {loadError}</div>
         ) : !task ? (
           <div>
-            <div className="text-base font-bold">Nothing scheduled today 💛</div>
-            <Link to="/add-task" className="mt-2 inline-block text-sm font-semibold text-blossomText">
-              Add a task →
-            </Link>
+            <div className="text-base font-bold">{happyMessage}</div>
+            <div className="mt-2 flex flex-wrap justify-center gap-2">
+              <Link to="/add-task" className="text-sm font-semibold text-blossomText">
+                Add a task →
+              </Link>
+              <Link to="/tasks" className="text-sm font-semibold text-blossomText">
+                See this week's tasks →
+              </Link>
+            </div>
           </div>
         ) : (
           <>
@@ -116,64 +115,30 @@ export default function HomePage() {
               {task.title}
             </div>
 
-            {scene === 'welcome' && (
-              <button
-                onClick={start}
-                className="mt-3 w-full rounded-wobble bg-leaf py-3 text-base font-bold text-leafText"
-              >
-                Start focus ▶
-              </button>
-            )}
+            <Link
+              to="/pomodoro"
+              className="mt-3 block w-full rounded-wobble bg-leaf py-3 text-base font-bold text-leafText"
+            >
+              Start focus session ▶
+            </Link>
 
-            {isActive && (
-              <div className="mt-3 flex flex-col gap-2">
-                <div className="text-2xl font-bold">
-                  {remaining} <span className="text-xs font-semibold text-textMuted">min left</span>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={isPaused ? resume : pause}
-                    className="flex-1 rounded-wobble bg-blossom py-2 text-sm font-semibold text-blossomText"
-                  >
-                    {isPaused ? 'Resume' : 'Pause'}
-                  </button>
-                  <button
-                    onClick={stop}
-                    className="flex-1 rounded-wobble bg-lilac py-2 text-sm font-semibold text-lilacText"
-                  >
-                    Stop
-                  </button>
-                </div>
-              </div>
-            )}
-
-            <div className="mt-3 flex flex-wrap justify-center gap-1">
+            <div className="mt-2 flex flex-wrap justify-center gap-1">
               <Link
                 to={`/breakdown/${task.id}`}
                 className="rounded-wobble bg-[#F3E3EE] px-3 py-2 text-xs font-semibold text-[#8B5C82]"
               >
                 😮‍💨 Feels too much
               </Link>
+              <button
+                onClick={handleMarkDone}
+                disabled={completing}
+                className="rounded-wobble bg-[#E5F7EB] px-3 py-2 text-xs font-semibold text-[#3E6B52] disabled:opacity-60"
+              >
+                ✅ Mark done
+              </button>
             </div>
           </>
         )}
-      </div>
-
-      <div className="mt-3">
-        <div className="mb-1.5 text-xs font-semibold text-textDark">🎧 Ambient sound</div>
-        <div className="flex flex-wrap gap-1.5">
-          {SOUND_OPTIONS.map((opt) => (
-            <button
-              key={opt.key}
-              onClick={() => toggleSound(opt.key)}
-              className={`rounded-wobble border-2 bg-cream px-2.5 py-1.5 text-[11px] font-semibold text-textDark ${
-                activeSound === opt.key ? 'border-blossom' : 'border-lilac'
-              }`}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
       </div>
     </div>
   )

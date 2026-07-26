@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { logMood } from '../lib/api'
+import { logMood, rearrangeWeek } from '../lib/api'
 
 export default function MoodCheckInPage() {
   const { user } = useAuth()
@@ -11,13 +11,22 @@ export default function MoodCheckInPage() {
   const [medicatedChoice, setMedicatedChoice] = useState(null)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
+  const [aiSummary, setAiSummary] = useState(null)
+  const [aiUnavailable, setAiUnavailable] = useState(false)
 
   async function handleContinue() {
     setSaving(true)
     setError(null)
     try {
       await logMood(user.id, mood, medicated)
-      navigate('/')
+      try {
+        const result = await rearrangeWeek(mood, medicated)
+        setAiSummary(result)
+      } catch {
+        // Mood is already saved either way — the rearrange step is a bonus,
+        // and it needs the FastAPI backend running locally to work.
+        setAiUnavailable(true)
+      }
     } catch (err) {
       setError(err.message)
     } finally {
@@ -35,6 +44,41 @@ export default function MoodCheckInPage() {
       {label}
     </button>
   )
+
+  if (aiSummary || aiUnavailable) {
+    return (
+      <div className="flex min-h-[70vh] items-center justify-center p-4">
+        <div className="w-full max-w-xs rounded-wobble bg-white p-5 text-center">
+          <div className="text-base font-bold">Mood logged 💛</div>
+          {aiSummary ? (
+            <>
+              <p className="mt-3 text-sm text-textDark">{aiSummary.summary}</p>
+              {aiSummary.changed_task_ids.length > 0 && (
+                <p className="mt-2 text-xs text-textMuted">
+                  {aiSummary.changed_task_ids.length} task{aiSummary.changed_task_ids.length > 1 ? 's' : ''} rescheduled.
+                </p>
+              )}
+              {aiSummary.breakdown_suggested_ids.length > 0 && (
+                <p className="mt-1 text-xs text-textMuted">
+                  Some big tasks could use breaking down — look for "Feels too much" on them.
+                </p>
+              )}
+            </>
+          ) : (
+            <p className="mt-3 text-xs text-textMuted">
+              (AI schedule adjustment wasn't available — start the backend locally to enable it.)
+            </p>
+          )}
+          <button
+            onClick={() => navigate('/')}
+            className="mt-4 w-full rounded-wobble bg-leaf py-2.5 text-sm font-bold text-leafText"
+          >
+            Continue →
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex min-h-[70vh] items-center justify-center p-4">
@@ -81,7 +125,7 @@ export default function MoodCheckInPage() {
           disabled={!mood || saving}
           className="mt-3 w-full rounded-wobble bg-leaf py-2.5 text-sm font-bold text-leafText disabled:opacity-50"
         >
-          Continue
+          {saving ? 'Thinking about your week…' : 'Continue'}
         </button>
       </div>
     </div>

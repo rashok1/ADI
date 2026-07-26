@@ -57,6 +57,18 @@ class MoodCheckIn(BaseModel):
     medicated: Optional[bool] = None
 
 
+class RearrangeChange(BaseModel):
+    id: str
+    scheduled_for: Optional[date] = None
+    urgency: Optional[Urgency] = None
+
+
+class RearrangeResponse(BaseModel):
+    summary: str
+    changed_task_ids: list[str]
+    breakdown_suggested_ids: list[str]
+
+
 class PomodoroStartRequest(BaseModel):
     task_id: Optional[str] = None
 

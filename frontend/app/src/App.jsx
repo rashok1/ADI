@@ -5,6 +5,8 @@ import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
 import BreakdownPage from './pages/BreakdownPage'
 import AddTaskPage from './pages/AddTaskPage'
+import TasksListPage from './pages/TasksListPage'
+import PomodoroPage from './pages/PomodoroPage'
 import WeeklyRecordPage from './pages/WeeklyRecordPage'
 import MoodCheckInPage from './pages/MoodCheckInPage'
 import SettingsPage from './pages/SettingsPage'
@@ -42,6 +44,22 @@ export default function App() {
         element={
           <Protected>
             <AddTaskPage />
+          </Protected>
+        }
+      />
+      <Route
+        path="/tasks"
+        element={
+          <Protected>
+            <TasksListPage />
+          </Protected>
+        }
+      />
+      <Route
+        path="/pomodoro"
+        element={
+          <Protected>
+            <PomodoroPage />
           </Protected>
         }
       />

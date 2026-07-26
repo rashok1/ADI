@@ -8,7 +8,8 @@ export default function AddTaskPage() {
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [dueDate, setDueDate] = useState('')
-  const [hours, setHours] = useState('')
+  const [duration, setDuration] = useState('')
+  const [durationUnit, setDurationUnit] = useState('minutes')
   const [urgency, setUrgency] = useState('medium')
   const [bigTaskMode, setBigTaskMode] = useState(null)
   const [saving, setSaving] = useState(false)
@@ -23,7 +24,7 @@ export default function AddTaskPage() {
         title,
         due_date: dueDate || null,
         scheduled_for: dueDate || todayLocal(),
-        hours_needed: hours ? Number(hours) : null,
+        hours_needed: duration ? (durationUnit === 'minutes' ? Number(duration) / 60 : Number(duration)) : null,
         urgency,
         big_task_mode: bigTaskMode
       })
@@ -61,15 +62,26 @@ export default function AddTaskPage() {
           />
         </label>
         <label className="flex-1 text-xs font-semibold text-textMuted">
-          Hours
-          <input
-            type="number"
-            step="0.5"
-            value={hours}
-            onChange={(e) => setHours(e.target.value)}
-            placeholder="1.5"
-            className="mt-1 w-full rounded-2xl border-2 border-border px-3 py-2 text-sm"
-          />
+          Duration
+          <div className="mt-1 flex gap-1">
+            <input
+              type="number"
+              min="0"
+              step={durationUnit === 'minutes' ? '1' : '0.5'}
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              placeholder={durationUnit === 'minutes' ? '10' : '1.5'}
+              className="w-full min-w-0 rounded-2xl border-2 border-border px-3 py-2 text-sm"
+            />
+            <select
+              value={durationUnit}
+              onChange={(e) => setDurationUnit(e.target.value)}
+              className="rounded-2xl border-2 border-border px-1.5 py-2 text-xs"
+            >
+              <option value="minutes">min</option>
+              <option value="hours">hrs</option>
+            </select>
+          </div>
         </label>
       </div>
 

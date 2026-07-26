@@ -94,7 +94,7 @@ create table if not exists ai_interactions (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
   task_id uuid references tasks(id) on delete cascade,
-  interaction_type text not null check (interaction_type in ('feels_too_much','just_two_min','under_five')),
+  interaction_type text not null check (interaction_type in ('feels_too_much','just_two_min','under_five','mood_rearrange')),
   request_payload jsonb,
   response_payload jsonb,
   created_at timestamptz not null default now()

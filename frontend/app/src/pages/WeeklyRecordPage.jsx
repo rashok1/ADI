@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { getWeeklyRecord } from '../lib/api'
+import MonthCalendar from '../components/MonthCalendar'
 
 export default function WeeklyRecordPage() {
   const { user } = useAuth()
@@ -30,6 +31,8 @@ export default function WeeklyRecordPage() {
       <p className="mt-3 text-center text-xs text-textMuted">
         No streaks — just a record of what you did 💛
       </p>
+
+      <MonthCalendar userId={user.id} />
     </div>
   )
 }

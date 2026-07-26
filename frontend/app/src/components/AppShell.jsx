@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom'
 const TABS = [
   { to: '/', label: 'Home', end: true },
   { to: '/add-task', label: 'Add task' },
+  { to: '/tasks', label: 'This week' },
+  { to: '/pomodoro', label: 'Focus timer' },
   { to: '/record', label: 'Weekly record' },
   { to: '/mood', label: 'Mood check-in' },
   { to: '/settings', label: 'Settings' }

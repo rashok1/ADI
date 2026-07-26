@@ -10,6 +10,32 @@
 
 import { supabase } from './supabaseClient'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+
+// Calls the FastAPI backend (currently only used for AI features that need
+// the Anthropic key, which must stay server-side). Everything else in this
+// file talks to Supabase directly — see the note in mood.rearrange usage.
+async function apiFetch(path, body) {
+  const { data } = await supabase.auth.getSession()
+  const token = data.session?.access_token
+  if (!token) throw new Error('Not signed in')
+
+  const res = await fetch(`${API_BASE_URL}${path}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(body)
+  })
+
+  if (!res.ok) {
+    const detail = await res.json().catch(() => null)
+    throw new Error(detail?.detail || `Request failed (${res.status})`)
+  }
+  return res.json()
+}
+
 // ---------- tasks ----------
 
 const URGENCY_RANK = { high: 0, medium: 1, low: 2 }
@@ -135,6 +161,12 @@ export async function logMood(userId, mood, medicated) {
     .single()
   if (error) throw error
   return data
+}
+
+// Asks Claude (via FastAPI) to rearrange this week's tasks based on today's
+// mood — the one AI feature that needs the backend running locally.
+export async function rearrangeWeek(mood, medicated) {
+  return apiFetch('/mood/rearrange', { mood, medicated })
 }
 
 // ---------- pomodoro sessions ----------
@@ -267,4 +299,28 @@ export async function getWeeklyRecord(userId) {
     weedsEarned,
     sessions: sessions ?? []
   }
+}
+
+// Completed-task counts per day for a given month, for the calendar heatmap.
+// month is 0-indexed (0 = January), matching JS Date conventions.
+export async function getMonthlyCompletion(userId, year, month) {
+  const start = new Date(year, month, 1).toISOString()
+  const end = new Date(year, month + 1, 1).toISOString()
+
+  const { data, error } = await supabase
+    .from('tasks')
+    .select('completed_at')
+    .eq('user_id', userId)
+    .eq('status', 'completed')
+    .gte('completed_at', start)
+    .lt('completed_at', end)
+
+  if (error) throw error
+
+  const counts = {}
+  for (const row of data ?? []) {
+    const day = new Date(row.completed_at).getDate()
+    counts[day] = (counts[day] || 0) + 1
+  }
+  return counts
 }

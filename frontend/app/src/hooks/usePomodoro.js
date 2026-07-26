@@ -3,7 +3,8 @@ import {
   startPomodoroSession,
   pausePomodoroSession,
   endPomodoroSession,
-  addWeeds
+  addWeeds,
+  completeTask
 } from '../lib/api'
 
 const SESSION_MINUTES = 25
@@ -13,7 +14,7 @@ const WEED_INTERVAL_MS = 1500
 // Drives the whole Pomodoro state machine: welcome -> active -> resting (pause)
 // -> active -> celebrate -> welcome. Talks to Supabase so sessions and
 // duckweed rewards persist for real.
-export function usePomodoro({ userId, taskId, onWeedsChange }) {
+export function usePomodoro({ userId, taskId, onWeedsChange, onTaskComplete }) {
   const [scene, setScene] = useState('welcome') // welcome | active | resting | celebrate
   const [remaining, setRemaining] = useState(SESSION_MINUTES)
   const [duckDip, setDuckDip] = useState(false)
@@ -54,10 +55,14 @@ export function usePomodoro({ userId, taskId, onWeedsChange }) {
           weedsEarned: weedsThisSessionRef.current
         })
       }
+      if (completed && taskId) {
+        await completeTask(taskId)
+        onTaskComplete?.(taskId)
+      }
       sessionIdRef.current = null
       weedsThisSessionRef.current = 0
     },
-    [clearTimers]
+    [clearTimers, taskId, onTaskComplete]
   )
 
   // Pure: just decrements. The actual "session finished" side effects
