@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Adi — anime pond pages (reference)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap">
+<style>
+  *{box-sizing:border-box;font-family:'Fredoka',sans-serif;}
+  body{background:#EFE9DC;margin:0;padding:24px;color:#3E6B52;}
+  h1{text-align:center;font-size:20px;font-weight:700;margin-bottom:16px;}
+  .tabs{display:flex;justify-content:center;gap:8px;margin-bottom:18px;}
+  .tab-btn{border:2px solid #cfd9c9;background:#fff;border-radius:16px;padding:8px 16px;font-size:13px;font-weight:600;color:#5C7A68;cursor:pointer;}
+  .tab-btn.active{background:#FFC9DE;color:#B5507A;border-color:#FFC9DE;}
+  .stage{display:flex;justify-content:center;}
+  .card{width:400px;border-radius:26px;overflow:hidden;position:relative;box-shadow:0 6px 24px rgba(0,0,0,0.08);}
+  .page{display:none;}
+  .page.active{display:block;}
+  .overlay{position:absolute;left:0;right:0;bottom:0;padding:18px 20px 22px;text-align:center;}
+  button.cta{border:none;cursor:pointer;padding:11px 28px;border-radius:20px;font-size:15px;font-weight:600;font-family:'Fredoka',sans-serif;transition:transform .2s cubic-bezier(.68,-0.55,.27,1.55);}
+  button.cta:hover{transform:scale(1.05);}
+  button.cta:active{transform:scale(0.94);}
+  @keyframes twinkle{0%,100%{opacity:.2;transform:scale(0.7);}50%{opacity:1;transform:scale(1.1);}}
+  .spark{animation:twinkle 1.6s ease-in-out infinite;}
+</style>
+</head>
+<body>
+<h1>adi — anime pond pages</h1>
+<div class="tabs" id="tabs">
+  <button class="tab-btn" data-p="welcome">Welcome</button>
+  <button class="tab-btn" data-p="empty">Resting</button>
+  <button class="tab-btn" data-p="celebrate">Celebrate</button>
+</div>
+
+<div class="stage"><div class="card">
+
+<div class="page active" id="p-welcome">
+  <svg viewBox="0 0 400 280" style="width:100%;display:block;">
+    <defs>
+      <linearGradient id="water1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#9FE0DA"/><stop offset="100%" stop-color="#4E9CA0"/>
+      </linearGradient>
+      <radialGradient id="glow1" cx="30%" cy="20%" r="60%">
+        <stop offset="0%" stop-color="#FFFDE7" stop-opacity="0.55"/><stop offset="100%" stop-color="#FFFDE7" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="rock1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#E4DACB"/><stop offset="100%" stop-color="#B8AA96"/>
+      </linearGradient>
+      <filter id="blur1"><feGaussianBlur stdDeviation="4"/></filter>
+    </defs>
+    <rect x="0" y="0" width="400" height="280" fill="#DCEFDD"/>
+    <g filter="url(#blur1)" opacity="0.8">
+      <ellipse cx="40" cy="30" rx="60" ry="34" fill="#7EBE7A"/>
+      <ellipse cx="160" cy="18" rx="70" ry="28" fill="#6BAE6E"/>
+      <ellipse cx="320" cy="28" rx="80" ry="36" fill="#8AC784"/>
+    </g>
+    <rect x="0" y="60" width="400" height="220" fill="url(#water1)"/>
+    <g stroke="#fff" stroke-opacity="0.25" fill="none">
+      <ellipse cx="90" cy="120" rx="26" ry="6"/><ellipse cx="270" cy="160" rx="30" ry="7"/><ellipse cx="200" cy="220" rx="34" ry="8"/>
+    </g>
+    <g>
+      <ellipse cx="40" cy="240" rx="46" ry="24" fill="url(#rock1)"/>
+      <ellipse cx="25" cy="222" rx="20" ry="10" fill="#7BB86F"/>
+      <circle cx="55" cy="220" r="4" fill="#FFC9DE"/><circle cx="63" cy="224" r="3" fill="#FFC9DE"/>
+    </g>
+    <g>
+      <ellipse cx="360" cy="200" rx="40" ry="22" fill="url(#rock1)"/>
+      <ellipse cx="372" cy="185" rx="18" ry="9" fill="#7BB86F"/>
+    </g>
+    <ellipse cx="120" cy="200" rx="22" ry="9" fill="#5FAE5E"/>
+    <path d="M120,200 L134,196 L134,204 Z" fill="#DCEFDD"/>
+    <ellipse cx="300" cy="240" rx="26" ry="10" fill="#5FAE5E"/>
+    <ellipse cx="150" cy="255" rx="18" ry="7" fill="#5FAE5E"/>
+    <g opacity="0.9">
+      <ellipse cx="288" cy="112" rx="11" ry="14" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="2"/><ellipse cx="282" cy="118" rx="5" ry="2.8" fill="#FFB13D" stroke="#1A1A1A" stroke-width="1.3"/><circle cx="284" cy="106" r="1.6" fill="#1A1A1A"/>
+      <ellipse cx="90" cy="92" rx="9" ry="12" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="2"/><ellipse cx="85" cy="97" rx="4.5" ry="2.5" fill="#FFB13D" stroke="#1A1A1A" stroke-width="1.3"/><circle cx="87" cy="87" r="1.4" fill="#1A1A1A"/>
+    </g>
+    <g transform="translate(157,120) scale(0.52)">
+      <path d="M70,15 C48,15 34,35 32,60 C30,85 28,110 34,130 C40,150 55,160 70,160 C85,160 100,150 106,130 C112,110 110,85 108,60 C106,35 92,15 70,15 Z" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="3"/>
+      <path d="M50,158 L44,172 L54,168 L58,158 Z" fill="#FFB13D" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M90,158 L96,172 L86,168 L82,158 Z" fill="#FFB13D" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/>
+      <ellipse cx="70" cy="79" rx="15" ry="8" fill="#FFB13D" stroke="#1A1A1A" stroke-width="2.5"/>
+      <circle cx="58" cy="55" r="4" fill="#1A1A1A"/>
+      <circle cx="82" cy="55" r="4" fill="#1A1A1A"/>
+      <path d="M50,118 Q70,126 90,118" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.35"/>
+      <path d="M52,134 Q70,141 88,134" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.3"/>
+    </g>
+    <ellipse cx="220" cy="242" rx="34" ry="7" fill="#fff" opacity="0.3"/>
+    <rect x="0" y="0" width="400" height="280" fill="url(#glow1)"/>
+    <g filter="url(#blur1)" opacity="0.7">
+      <ellipse cx="10" cy="270" rx="60" ry="20" fill="#4E8C52"/><ellipse cx="390" cy="270" rx="60" ry="20" fill="#4E8C52"/>
+    </g>
+  </svg>
+  <div class="overlay" style="background:linear-gradient(0deg,rgba(255,251,243,0.92) 40%,rgba(255,251,243,0));">
+    <div style="font-size:26px;font-weight:700;color:#3E6B52;">adi 🐥</div>
+    <div style="font-size:13px;font-weight:500;color:#5C7A68;margin:4px 0 12px;">grow calm, one task at a time</div>
+    <button class="cta" style="background:#FFC9DE;color:#B5507A;">Get started</button>
+  </div>
+</div>
+
+<div class="page" id="p-empty">
+  <svg viewBox="0 0 400 280" style="width:100%;display:block;">
+    <defs>
+      <linearGradient id="water2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#C9B6EA"/><stop offset="100%" stop-color="#5B7DA6"/>
+      </linearGradient>
+      <linearGradient id="rock2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#DCCFC0"/><stop offset="100%" stop-color="#A79684"/>
+      </linearGradient>
+      <filter id="blur2"><feGaussianBlur stdDeviation="4"/></filter>
+    </defs>
+    <rect x="0" y="0" width="400" height="280" fill="#E7D6E0"/>
+    <g filter="url(#blur2)" opacity="0.75">
+      <ellipse cx="40" cy="30" rx="60" ry="34" fill="#8E7BAE"/>
+      <ellipse cx="160" cy="18" rx="70" ry="28" fill="#7D6BA0"/>
+      <ellipse cx="320" cy="28" rx="80" ry="36" fill="#9A85B8"/>
+    </g>
+    <rect x="0" y="60" width="400" height="220" fill="url(#water2)"/>
+    <g>
+      <ellipse cx="40" cy="240" rx="46" ry="24" fill="url(#rock2)"/>
+      <ellipse cx="25" cy="222" rx="20" ry="10" fill="#7D6BA0"/>
+    </g>
+    <g>
+      <ellipse cx="360" cy="200" rx="40" ry="22" fill="url(#rock2)"/>
+      <ellipse cx="372" cy="185" rx="18" ry="9" fill="#7D6BA0"/>
+    </g>
+    <ellipse cx="120" cy="200" rx="22" ry="9" fill="#6B5A94"/>
+    <ellipse cx="300" cy="240" rx="26" ry="10" fill="#6B5A94"/>
+    <g transform="translate(157,120) scale(0.52)">
+      <path d="M70,15 C48,15 34,35 32,60 C30,85 28,110 34,130 C40,150 55,160 70,160 C85,160 100,150 106,130 C112,110 110,85 108,60 C106,35 92,15 70,15 Z" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="3"/>
+      <path d="M50,158 L44,172 L54,168 L58,158 Z" fill="#FFB13D" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M90,158 L96,172 L86,168 L82,158 Z" fill="#FFB13D" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/>
+      <ellipse cx="70" cy="79" rx="15" ry="8" fill="#FFB13D" stroke="#1A1A1A" stroke-width="2.5"/>
+      <path d="M50,55 Q58,49 66,55" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M74,55 Q82,49 90,55" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M50,118 Q70,126 90,118" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.35"/>
+      <path d="M52,134 Q70,141 88,134" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.3"/>
+      <text x="100" y="55" font-size="16" fill="#6B5A6B" font-family="Fredoka">z z z</text>
+    </g>
+    <ellipse cx="220" cy="242" rx="34" ry="7" fill="#fff" opacity="0.2"/>
+    <g filter="url(#blur2)" opacity="0.7">
+      <ellipse cx="10" cy="270" rx="60" ry="20" fill="#5C4A8B"/><ellipse cx="390" cy="270" rx="60" ry="20" fill="#5C4A8B"/>
+    </g>
+  </svg>
+  <div class="overlay" style="background:linear-gradient(0deg,rgba(255,251,243,0.92) 40%,rgba(255,251,243,0));">
+    <div style="font-size:19px;font-weight:700;color:#5C4A8B;">You did enough today 💛</div>
+    <div style="font-size:13px;font-weight:500;color:#8A7AA0;margin:4px 0 12px;">no guilt, no streaks — see you tomorrow</div>
+    <button class="cta" style="background:#D8C7F2;color:#6B4FA0;">Close for today</button>
+  </div>
+</div>
+
+<div class="page" id="p-celebrate">
+  <svg viewBox="0 0 400 280" style="width:100%;display:block;">
+    <defs>
+      <linearGradient id="water3" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#FFE9B8"/><stop offset="100%" stop-color="#5FBFB0"/>
+      </linearGradient>
+      <linearGradient id="rock3" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#E4DACB"/><stop offset="100%" stop-color="#B8AA96"/>
+      </linearGradient>
+      <filter id="blur3"><feGaussianBlur stdDeviation="4"/></filter>
+    </defs>
+    <rect x="0" y="0" width="400" height="280" fill="#FFF3D6"/>
+    <g filter="url(#blur3)" opacity="0.75">
+      <ellipse cx="40" cy="30" rx="60" ry="34" fill="#8AC784"/>
+      <ellipse cx="160" cy="18" rx="70" ry="28" fill="#7EBE7A"/>
+      <ellipse cx="320" cy="28" rx="80" ry="36" fill="#95CE8E"/>
+    </g>
+    <rect x="0" y="60" width="400" height="220" fill="url(#water3)"/>
+    <g>
+      <ellipse cx="40" cy="240" rx="46" ry="24" fill="url(#rock3)"/>
+      <ellipse cx="25" cy="222" rx="20" ry="10" fill="#7BB86F"/>
+    </g>
+    <g>
+      <ellipse cx="360" cy="200" rx="40" ry="22" fill="url(#rock3)"/>
+      <ellipse cx="372" cy="185" rx="18" ry="9" fill="#7BB86F"/>
+    </g>
+    <ellipse cx="120" cy="200" rx="22" ry="9" fill="#5FAE5E"/>
+    <ellipse cx="300" cy="240" rx="26" ry="10" fill="#5FAE5E"/>
+    <g transform="translate(157,120) scale(0.52)">
+      <path d="M70,15 C48,15 34,35 32,60 C30,85 28,110 34,130 C40,150 55,160 70,160 C85,160 100,150 106,130 C112,110 110,85 108,60 C106,35 92,15 70,15 Z" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="3"/>
+      <path d="M50,158 L44,172 L54,168 L58,158 Z" fill="#FFB13D" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M90,158 L96,172 L86,168 L82,158 Z" fill="#FFB13D" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/>
+      <ellipse cx="70" cy="79" rx="15" ry="8" fill="#FFB13D" stroke="#1A1A1A" stroke-width="2.5"/>
+      <circle cx="58" cy="55" r="4" fill="#1A1A1A"/>
+      <circle cx="82" cy="55" r="4" fill="#1A1A1A"/>
+      <path d="M50,118 Q70,126 90,118" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.35"/>
+      <path d="M52,134 Q70,141 88,134" stroke="#1A1A1A" stroke-width="1.5" fill="none" opacity="0.3"/>
+    </g>
+    <g fill="#FFD54F">
+      <path class="spark" d="M60,60 L63,68 L71,70 L63,72 L60,80 L57,72 L49,70 L57,68 Z"/>
+      <path class="spark" style="animation-delay:.4s" d="M330,90 L333,98 L341,100 L333,102 L330,110 L327,102 L319,100 L327,98 Z"/>
+      <path class="spark" style="animation-delay:.8s" d="M250,50 L252,56 L258,58 L252,60 L250,66 L248,60 L242,58 L248,56 Z"/>
+    </g>
+  </svg>
+  <div class="overlay" style="background:linear-gradient(0deg,rgba(255,251,243,0.92) 40%,rgba(255,251,243,0));">
+    <div style="font-size:19px;font-weight:700;color:#3E6B52;">Great focus session! 🎉</div>
+    <div style="font-size:13px;font-weight:500;color:#5C7A68;margin:4px 0 12px;">+3 🌿 duckweed earned</div>
+    <button class="cta" style="background:#C8F0D4;color:#3E8C5A;">Back to today</button>
+  </div>
+</div>
+
+</div></div>
+
+<script>
+const btns=document.querySelectorAll('.tab-btn');
+const pages=document.querySelectorAll('.page');
+function show(name){
+  pages.forEach(p=>p.classList.toggle('active', p.id==='p-'+name));
+  btns.forEach(b=>b.classList.toggle('active', b.dataset.p===name));
+}
+btns.forEach(b=>b.addEventListener('click',()=>show(b.dataset.p)));
+show('welcome');
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: 'Fredoka', sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #dcefdd;
+  min-height: 100vh;
+}
+
+button {
+  font-family: 'Fredoka', sans-serif;
+}
+
+@keyframes duckFloat {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-7px) rotate(2deg); }
+}
+@keyframes duckSit {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes duckDip {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(6px) scale(0.97); }
+}
+@keyframes riverFlow {
+  0% { background-position-x: 0; }
+  100% { background-position-x: 120px; }
+}
+@keyframes weedPop {
+  0% { opacity: 0; transform: translateY(0) scale(0.6); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-40px) scale(1.15); }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+.animate-duck-idle { animation: duckSit 3s ease-in-out infinite; }
+.animate-duck-active { animation: duckFloat 2.4s ease-in-out infinite; }
+.animate-duck-dip { animation: duckDip 0.4s ease-in-out; }
+.animate-river { animation: riverFlow 2.4s linear infinite; }
+.animate-weed-pop { animation: weedPop 1.1s ease-out forwards; }
+.animate-spark { animation: twinkle 1.6s ease-in-out infinite; }
