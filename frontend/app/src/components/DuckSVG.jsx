@@ -1,4 +1,4 @@
-// Pip the duckling — one continuous outline body, simple dot eyes, flat
+// Dia the duckling — one continuous outline body, simple dot eyes, flat
 // beak and feet, two thin belly lines. Reused at every size across the app.
 export default function DuckSVG({ className = '', width = 72, height = 90, sleeping = false }) {
   return (

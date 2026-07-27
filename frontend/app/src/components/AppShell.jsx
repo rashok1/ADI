@@ -36,7 +36,7 @@ export default function AppShell({ children }) {
         </svg>
       </div>
 
-      <h1 className="mb-4 text-center text-xl font-bold">adi — meet Pip 🐥</h1>
+      <h1 className="mb-4 text-center text-xl font-bold">ADI — your task helper</h1>
 
       <div className="mb-4 flex flex-wrap justify-center gap-1.5">
         {TABS.map((tab) => (

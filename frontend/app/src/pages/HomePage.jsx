@@ -91,6 +91,10 @@ export default function HomePage() {
         <ShopModal open={shopOpen} onClose={() => setShopOpen(false)} weeds={weeds} owned={owned} onBuy={handleBuy} />
       </div>
 
+      <div className="mt-2 rounded-wobble bg-cream px-3 py-2 text-center text-sm font-semibold text-textDark">
+        Hi! I'm Dia — I'll be working alongside you 🐥
+      </div>
+
       <div className="mt-3 rounded-wobble bg-cream p-4 text-center">
         {loadingTask ? (
           <div className="text-sm text-textMuted">Finding today's task…</div>
